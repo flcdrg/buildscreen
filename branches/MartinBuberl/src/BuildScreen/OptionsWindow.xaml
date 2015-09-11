@@ -1,0 +1,102 @@
+﻿<Window x:Class="BuildScreen.OptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ValueConverter="clr-namespace:BuildScreen.Core.ValueConverter"
+        Title="Options"
+        Height="606" Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Icon="/BuildScreen;component/App.ico"
+        Loaded="OnLoaded">
+    <Window.Resources>
+        <ValueConverter:BooleanConverter x:Key="BooleanConverter"/>
+        <Style x:Key="TextBoxHasError" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+                    <Setter Property="Background" Value="#ff9999" />
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <TabControl Margin="12,12,12,0" Name="tabControl1" VerticalAlignment="Top" Height="479">
+            <TabItem Header="Setup" Name="tabItem1" MinWidth="100">
+                <Grid>
+                    <GroupBox Header="Continous Integration Server" Height="65" Margin="6,6,6,0" Name="groupBox1" VerticalAlignment="Top">
+                        <Grid>
+                            <ComboBox Height="23" HorizontalAlignment="Left" Margin="12,8,0,0" Name="comboBox1" VerticalAlignment="Top" Width="120" />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Server Details" Height="152" Margin="6,77,6,0" Name="groupBox2" VerticalAlignment="Top">
+                        <Grid>
+
+                            <Label Content="Domain" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
+                            <TextBox x:Name="TextBoxDomain" Style="{StaticResource TextBoxHasError}" Height="23" HorizontalAlignment="Left" Margin="120,8,0,0" VerticalAlignment="Top" Width="120">
+                                <Binding Path="Domain" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
+                                    <Binding.ValidationRules>
+                                        <ExceptionValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox>
+
+                            <Label Content="Port" Height="28" HorizontalAlignment="Left" Margin="6,35,0,0" VerticalAlignment="Top" />
+                            <TextBox x:Name="TextBoxPort" Style="{StaticResource TextBoxHasError}" Height="23" HorizontalAlignment="Left" Margin="120,37,0,0" VerticalAlignment="Top" Width="120">
+                                <TextBox.Text>
+                                    <Binding Path="Port" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
+                                        <Binding.ValidationRules>
+                                            <ExceptionValidationRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <Label Content="Protocol" Height="28" HorizontalAlignment="Left" Margin="6,64,0,0" VerticalAlignment="Top" />
+                            <RadioButton x:Name="RadioButtonProtocolHttp" Content="HTTP" Height="16" HorizontalAlignment="Left" Margin="120,69,0,0" VerticalAlignment="Top">
+                                <RadioButton.IsChecked>
+                                    <Binding Path="SecureSocketLayer" Mode="TwoWay" Converter="{StaticResource BooleanConverter}" ConverterParameter="false" />
+                                </RadioButton.IsChecked>
+                            </RadioButton>
+                            <RadioButton x:Name="RadioButtonProtocolHttps" Content="HTTPS" Height="16" HorizontalAlignment="Left" Margin="170,69,0,0" VerticalAlignment="Top">
+                                <RadioButton.IsChecked>
+                                    <Binding Path="SecureSocketLayer" Mode="TwoWay" Converter="{StaticResource BooleanConverter}" ConverterParameter="true" />
+                                </RadioButton.IsChecked>
+                            </RadioButton>
+
+                            <Label Content="Preview" Height="28" HorizontalAlignment="Left" Margin="6,93,0,0" VerticalAlignment="Top" />
+                            <TextBox Height="23" HorizontalAlignment="Left" Margin="120,95,0,0" x:Name="TextBoxPreview" VerticalAlignment="Top" Width="120" Text="{Binding Preview}" IsReadOnly="False" IsEnabled="False" />
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="User Credentials" Height="94" Margin="6,235,6,0" Name="groupBox3" VerticalAlignment="Top">
+                        <Grid>
+                            <Label Content="User name" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label4" VerticalAlignment="Top" />
+                            <Label Content="Password" Height="28" HorizontalAlignment="Left" Margin="6,35,0,0" Name="label5" VerticalAlignment="Top" />
+                            <TextBox Height="23" HorizontalAlignment="Left" Margin="120,8,0,0" Name="textBox1" VerticalAlignment="Top" Width="120" />
+                            <PasswordBox Height="23" HorizontalAlignment="Left" Margin="120,37,0,0" Name="passwordBox1" VerticalAlignment="Top" Width="120" />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Test Connection" Height="100" Margin="6,335,6,0" Name="groupBox4" VerticalAlignment="Top">
+                        <Grid>
+                            <Button Content="Test" Height="23" HorizontalAlignment="Left" Margin="12,8,0,0" Name="button3" VerticalAlignment="Top" Width="120" />
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Environment" Name="tabItemEnvironment" MinWidth="100" IsEnabled="False">
+                <Grid />
+            </TabItem>
+            <TabItem Header="Builds" Name="tabItemBuilds" MinWidth="100" IsEnabled="False">
+                <Grid />
+            </TabItem>
+            <TabItem Header="About" x:Name="tabItemAbout" MinWidth="100" IsEnabled="False">
+                <Grid />
+            </TabItem>
+        </TabControl>
+        <Button x:Name="ButtonOkay" Content="OK" Margin="0,0,93,12" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="ButtonOkay_OnClick" />
+        <Button x:Name="ButtonCancel" Content="Cancel" Margin="391,0,12,12" Height="23" VerticalAlignment="Bottom" Click="ButtonCancel_OnClick" />
+    </Grid>
+</Window>

@@ -1,0 +1,7 @@
+* To add a plugin to BuildScreen you have to implement IBuildScreenPlugin found in BuildScreen.Plugin.dll. And your implementation also needs to derive from 'MarshalByRefObject'.
+* Next thing is to add your dll to folder 'Plugin'
+* When this is done you need to configure the plugin in 'BuildScreen.exe.config'
+* Add the following under <Plugins>
+	-  <plugin type="Namespace.ClassName" name="NameOfDll.dll" />
+
+When this is done. Your plugin should be triggered every time a build changes status (Success/fail). You can look in your EventViewer to see logs.

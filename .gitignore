@@ -1,0 +1,40 @@
+# Mac/Windows
+
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+
+# Visual Studio
+
+*.suo
+*.csproj.user
+*.ReSharper.user
+*.cache
+_ReSharper.*
+_UpgradeReport_Files
+UpgradeLog.XML
+*.sln.cache
+bin/*
+obj/*
+Bin/*
+Obj/*
+Output-Build.txt
+
+
+# Log4Net
+
+Log.txt*
+
+
+# NUnit
+
+TestResult.xml
+
+
+# Project
+
+build
+HgVersionInfo.cs
+all.min.css
+all.min.js

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Initialization -->
+
+  <PropertyGroup>
+    <SolutionName>BuildScreen</SolutionName>
+    <Configuration Condition="'$(Configuration)'==''">Release</Configuration>
+    <Platform Condition="'$(Platform)'==''">Any CPU</Platform>
+    <SrcFolder>$(MSBuildProjectDirectory)\src</SrcFolder>
+    <LibFolder>$(MSBuildProjectDirectory)\lib</LibFolder>
+    <BuildFolder>$(MSBuildProjectDirectory)\build</BuildFolder>
+    <CompileFolder>$(BuildFolder)\$(SolutionName)</CompileFolder>
+  </PropertyGroup>
+
+  <Import Project="$(LibFolder)\msbuild\MSBuild.Community.Tasks.Targets"/>
+
+  <!-- Coordinating Targets -->
+
+  <Target Name="Build">
+    <CallTarget Targets="Clean" />
+    <CallTarget Targets="Compile" />
+    <CallTarget Targets="CompileLocal" />
+    <CallTarget Targets="Test" />
+    <CallTarget Targets="Zip" />
+  </Target>
+  
+  <Target Name="TeamCity">
+    <CallTarget Targets="Clean"/>
+    <CallTarget Targets="Compile"/>
+  </Target>
+
+  <!-- Cleaning -->
+
+  <Target Name="Clean">
+    <MSBuild
+      Projects="$(SrcFolder)\$(SolutionName).sln"
+      Targets="Clean" />
+
+    <RemoveDir
+      Directories="$(BuildFolder)" />
+  </Target>
+  
+  <!-- Compile to "OutputFolder" -->
+  
+  <Target Name="Compile">
+    <MSBuild
+      Projects="$(SrcFolder)\$(SolutionName).sln"
+      Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(CompileFolder)"
+      Targets="Build" />
+  </Target>
+  
+  <!-- Compile to "regular" output folder for developers using Visual Studio locally -->
+  
+  <Target Name="CompileLocal">
+    <MSBuild
+      Projects="$(SrcFolder)\$(SolutionName).sln"
+      Properties="Configuration=$(Configuration);Platform=$(Platform)"
+      Targets="Build" />
+  </Target>
+
+  <!-- Testing -->
+
+  <Target Name="Test">
+    <CreateItem Include="$(CompileFolder)\*.Tests.*dll">
+      <Output TaskParameter="Include" ItemName="TestAssemblies" />
+    </CreateItem>
+
+    <NUnit
+      Assemblies="@(TestAssemblies)"
+      ToolPath="$(LibFolder)\nunit"
+      WorkingDirectory="$(CompileFolder)"
+      OutputXmlFile="$(BuildFolder)\$(SolutionName).Tests.xml" />
+  </Target>
+
+  <!-- Zipping -->
+
+  <ItemGroup>
+    <ZipFiles Include="$(CompileFolder)\License.txt" />
+    <ZipFiles Include="$(CompileFolder)\$(SolutionName).exe" />
+    <ZipFiles Include="$(CompileFolder)\$(SolutionName).exe.config" />
+    <ZipFiles Include="$(CompileFolder)\$(SolutionName).Plugin.dll" />
+  </ItemGroup>
+
+  <Target Name="Zip">
+    <Copy
+      SourceFiles="$(MSBuildProjectDirectory)\License.txt"
+      DestinationFolder="$(CompileFolder)" />
+    <GetAssemblyIdentity
+      AssemblyFiles="$(CompileFolder)\$(SolutionName).exe">
+      <Output
+        TaskParameter="Assemblies"
+        ItemName="AssemblyIdentities"/>
+    </GetAssemblyIdentity>
+    <Zip
+      WorkingDirectory="$(CompileFolder)"
+      Files="@(ZipFiles)"
+      ZipFileName="$(CompileFolder)\$(SolutionName)_v%(AssemblyIdentities.Version).zip" />
+  </Target>
+
+</Project>
