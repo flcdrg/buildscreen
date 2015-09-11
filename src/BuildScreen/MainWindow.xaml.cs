@@ -1,17 +1,14 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 using BuildScreen.ContinousIntegration;
 using BuildScreen.ContinousIntegration.Entities;
 using BuildScreen.ContinousIntegration.Exceptions;
 using BuildScreen.ContinousIntegration.Persistance;
 using BuildScreen.Core.Security;
-using BuildScreen.Core.Utilities;
 using BuildScreen.Plugin;
 using BuildScreen.Properties;
 using BuildScreen.Resources;
@@ -24,10 +21,22 @@ namespace BuildScreen
         private PluginHandler _pluginHandler;
         private IClientFactory _clientFactory;
 
+        #region Dependency Properties
+
+        public ObservableCollection<Build> Builds { get; set; }
+
+        #endregion
+
+        #region Lifetime
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Event Handlers
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -36,141 +45,64 @@ namespace BuildScreen
             _clientFactory = new ClientFactory();
             _pluginHandler = new PluginHandler();
 
-            ConnectAndRender();
+            UpdateBuilds();
 
-            _dispatcherTimer.Tick += DispatcherTimer_Tick;
+            _dispatcherTimer.Tick += UpdateTimer_Tick;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, Settings.Default.RefreshInterval);
             _dispatcherTimer.Start();
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F11)
+            switch (e.Key)
             {
-                WindowStyle = WindowStyle.None;
-                WindowState = WindowState.Maximized;
-                Topmost = true;
+                case Key.F11:
+                    WindowStyle = WindowStyle.None;
+                    WindowState = WindowState.Maximized;
+                    Topmost = true;
 
-                ShortcutsInfo.Text = InternalResources.ShortcutInfoExitFullScreen;
-            }
+                    ShortcutsInfo.Text = InternalResources.ShortcutInfoExitFullScreen;
+                    break;
+                case Key.Escape:
+                    WindowStyle = WindowStyle.SingleBorderWindow;
+                    WindowState = WindowState.Normal;
+                    Topmost = false;
 
-            if (e.Key == Key.Escape)
-            {
-                WindowStyle = WindowStyle.SingleBorderWindow;
-                WindowState = WindowState.Normal;
-                Topmost = false;
+                    ShortcutsInfo.Text = InternalResources.ShortcutInfoEnterFullScreen;
+                    break;
+                default:
+                    if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.O)
+                    {
+                        _dispatcherTimer.Stop();
 
-                ShortcutsInfo.Text = InternalResources.ShortcutInfoEnterFullScreen;
-            }
-
-            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.O)
-            {
-                _dispatcherTimer.Stop();
-
-                foreach (Grid grid in UniformGridBuilds.Children.OfType<Grid>())
-                {
-                    grid.Background = Graphics.BrushNeutral;
-                }
-
-                OptionsWindow optionsDialog = new OptionsWindow();
-                optionsDialog.Closing += OptionsWindow_Closing;
-                optionsDialog.ShowDialog();
+                        var optionsDialog = new OptionsWindow();
+                        optionsDialog.Closing += OptionsWindow_Closing;
+                        optionsDialog.ShowDialog();
+                    }
+                    break;
             }
         }
 
         private void OptionsWindow_Closing(object sender, CancelEventArgs e)
         {
-            ConnectAndRender();
+            UpdateBuilds();
 
             _dispatcherTimer.Interval = new TimeSpan(0, 0, Settings.Default.RefreshInterval);
             _dispatcherTimer.Start();
         }
 
-        private void DispatcherTimer_Tick(object sender, EventArgs e)
+        private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            ConnectAndRender();
+            UpdateBuilds();
         }
 
-        private void ConnectAndRender()
-        {
-            UniformGridBuilds.Children.Clear();
-            UniformGridBuilds.Columns = Settings.Default.NumberOfColumns;
+        #endregion
 
-            ClientConfiguration clientConfiguration = LoadClientConfiguration();
-
-            if (!clientConfiguration.AllDataExists)
-                return;
- 
-            try
-            {
-                using (IClient client = _clientFactory.CreateClient(clientConfiguration))
-                {
-                    if (client.IsConnected)
-                    {
-                        foreach (Build storedBuild in Settings.Default.Builds)
-                        {
-                            try
-                            {
-                                Build build = client.BuildByUniqueIdentifier(storedBuild.UniqueIdentifier);
-
-                                _pluginHandler.TriggerPlugins(storedBuild, build);
-
-                                int daysLastBuildHappened = DateTime.Now.Subtract(build.StartDate).Days;
-
-                                if (!Settings.Default.HideInactive || Settings.Default.HideInactive && daysLastBuildHappened < Settings.Default.HideInactiveWeeks * 7)
-                                {
-                                    LoadGridWithBuilds(build);
-                                }
-                            }
-                            catch (ClientLoadDocumentException)
-                            {
-                                // TODO: One build could not get loaded via typeId, maybe it got deleted but is still in the settings; Display error message
-                            }
-                        }
-                    }
-                }
-            }
-            catch (ClientConnectionException)
-            {
-                // TODO: Display error message
-            }
-        }
-
-        private void LoadGridWithBuilds(Build build)
-        {
-            StackPanel stackPanel = new StackPanel();
- 
-            stackPanel.Children.Insert(0, new TextBlock
-                                              {
-                                                  Text = string.IsNullOrEmpty(build.ProjectName) ? build.TypeName : string.Format("{0}, {1}", build.ProjectName, build.TypeName),
-                                                  FontSize = 24,
-                                                  Foreground = new SolidColorBrush(Colors.White),
-                                                  Padding = new Thickness(10, 0, 10, 0)
-                                              });
-
-            stackPanel.Children.Insert(1, new TextBlock
-                                              {
-                                                  Text = string.IsNullOrEmpty(build.ProjectName) ? string.Format("Build {0}", build.Number) : string.Format("Build {0}, {1}", build.Number, build.StatusText),
-                                                  FontSize = 12,
-                                                  Foreground = new SolidColorBrush(Colors.White),
-                                                  Padding = new Thickness(10, 0, 10, 6)
-                                              });
-
-            Viewbox viewbox = new Viewbox();
-            viewbox.HorizontalAlignment = HorizontalAlignment.Left;
-            viewbox.Child = stackPanel;
-
-            Grid grid = new Grid();
-            grid.Background = build.Status == Status.Success ? Graphics.BrushSuccess : Graphics.BrushFailure;
-            grid.Tag = build;
-            grid.Children.Insert(0, viewbox);
-
-            UniformGridBuilds.Children.Insert(0, grid);
-        }
+        #region Configuration
 
         private static ClientConfiguration LoadClientConfiguration()
         {
-            string baseUrl = string.Empty;
+            var baseUrl = string.Empty;
 
             switch (Settings.Default.ClientType)
             {
@@ -186,16 +118,64 @@ namespace BuildScreen
             }
 
             return new ClientConfiguration
-                {
-                    Domain = Settings.Default.Domain,
-                    Port = Settings.Default.Port,
-                    UserName = Settings.Default.UserName,
-                    Password = SecureData.Decrypt(Settings.Default.Password),
-                    UseSsl = Settings.Default.UseSsl,
-                    IgnoreInvalidCertificate = Settings.Default.IgnoreInvalidCertificate,
-                    ClientType = Settings.Default.ClientType,
-                    BaseUrl = baseUrl
-                };
+            {
+                Domain = Settings.Default.Domain,
+                Port = Settings.Default.Port,
+                UserName = Settings.Default.UserName,
+                Password = SecureData.Decrypt(Settings.Default.Password),
+                UseSsl = Settings.Default.UseSsl,
+                IgnoreInvalidCertificate = Settings.Default.IgnoreInvalidCertificate,
+                ClientType = Settings.Default.ClientType,
+                BaseUrl = baseUrl
+            };
         }
+
+        #endregion
+
+        #region Updates
+
+        private void UpdateBuilds()
+        {
+            Builds.Clear();
+
+            var clientConfiguration = LoadClientConfiguration();
+            if (!clientConfiguration.AllDataExists) return;
+
+            try
+            {
+                using (var client = _clientFactory.CreateClient(clientConfiguration))
+                {
+                    if (!client.IsConnected) return;
+
+                    foreach (var storedBuild in Settings.Default.Builds)
+                    {
+                        try
+                        {
+                            var build = client.BuildByUniqueIdentifier(storedBuild.UniqueIdentifier);
+
+                            _pluginHandler.TriggerPlugins(storedBuild, build);
+
+                            var daysLastBuildHappened = DateTime.Now.Subtract(build.StartDate).Days;
+
+                            if (!Settings.Default.HideInactive ||
+                                Settings.Default.HideInactive && daysLastBuildHappened < Settings.Default.HideInactiveWeeks * 7)
+                            {
+                                Builds.Add(build);
+                            }
+                        }
+                        catch (ClientLoadDocumentException)
+                        {
+                            // TODO: One build could not get loaded via typeId, maybe it got deleted but is still in the settings; Display error message
+                        }
+                    }
+                }
+            }
+            catch (ClientConnectionException)
+            {
+                // TODO: Display error message
+            }
+        }
+
+        #endregion
     }
 }
