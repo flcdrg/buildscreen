@@ -18,8 +18,16 @@
         x:Name="Window">
   <Window.Resources>
     <DataTemplate x:Key="BuildItemTemplate" DataType="{x:Type entities:Build}">
-      <Grid Background="Blue">
-        <TextBlock FontSize="40" Foreground="White" Text="{Binding ProjectName}" />
+      <Grid>
+        <Rectangle Fill="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" />
+        <Viewbox>
+          <DockPanel>
+            <StackPanel DockPanel.Dock="Left" x:Name="Left" Width="518.333">
+              <TextBlock FontSize="32" Foreground="White" Text="{Binding Title}" />
+              <TextBlock FontSize="18" Foreground="White" Text="{Binding Subtitle}" />
+            </StackPanel>
+          </DockPanel>
+        </Viewbox>
       </Grid>
     </DataTemplate>
   </Window.Resources>

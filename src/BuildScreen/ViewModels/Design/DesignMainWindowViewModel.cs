@@ -6,8 +6,14 @@ namespace BuildScreen.Design
 {
     public class DesignMainWindowViewModel : MainWindowViewModel
     {
-        public override ObservableCollection<Build> Builds =>
-            new ObservableCollection<Build>(new[] { CreateDummyBuild1(), CreateDummyBuild2(), CreateDummyBuild1(), CreateDummyBuild2() });
+        public override ObservableCollection<BuildViewModel> Builds =>
+            new ObservableCollection<BuildViewModel>(new[]
+                {
+                    new BuildViewModel(CreateDummyBuild1()),
+                    new BuildViewModel(CreateDummyBuild2()),
+                    new BuildViewModel(CreateDummyBuild1()),
+                    new BuildViewModel(CreateDummyBuild2())
+                });
 
         private static Build CreateDummyBuild1()
         {

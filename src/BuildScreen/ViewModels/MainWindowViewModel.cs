@@ -7,6 +7,6 @@ namespace BuildScreen
 {
     public class MainWindowViewModel
     {
-        public virtual ObservableCollection<Build> Builds { get; } = new ObservableCollection<Build>();
+        public virtual ObservableCollection<BuildViewModel> Builds { get; } = new ObservableCollection<BuildViewModel>();
     }
 }

@@ -155,7 +155,7 @@ namespace BuildScreen
                             if (!Settings.Default.HideInactive ||
                                 Settings.Default.HideInactive && daysLastBuildHappened < Settings.Default.HideInactiveWeeks * 7)
                             {
-                                ViewModel.Builds.Add(build);
+                                ViewModel.Builds.Add(new BuildViewModel(build));
                             }
                         }
                         catch (ClientLoadDocumentException)
