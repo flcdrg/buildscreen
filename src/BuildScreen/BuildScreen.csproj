@@ -91,7 +91,10 @@
     <Compile Include="Core\Shell\SingleInstance.cs" />
     <Compile Include="Core\Utilities\Graphics.cs" />
     <Compile Include="Core\Utilities\Validate.cs" />
-    <Compile Include="OptionsWindow.xaml.cs">
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\Design\DesignMainWindowViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Windows\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\Security\SecureData.cs" />
@@ -107,7 +110,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InternalResources.resx</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -115,11 +118,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="OptionsWindow.xaml">
+    <Page Include="Windows\OptionsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

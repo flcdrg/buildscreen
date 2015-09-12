@@ -5,7 +5,7 @@ using BuildScreen.Core.Shell;
 
 namespace BuildScreen
 {
-    public partial class App : Application, ISingleInstanceApp
+    public partial class App : ISingleInstanceApp
     {
         private const string Unique = "F46D2B3FFBCB4c5aA1C746B37A7AB6E8";
 
