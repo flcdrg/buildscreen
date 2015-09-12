@@ -8,10 +8,10 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type Design:DesignMainWindowViewModel}, IsDesignTimeCreatable=true}"
         Title="BuildScreen"
-        Height="350"
-        Width="525"
-        MinHeight="350"
-        MinWidth="525"
+        Width="640"
+        Height="480"
+        MinWidth="640"
+        MinHeight="480"
         Icon="/BuildScreen;component/App.ico"
         KeyDown="MainWindow_KeyDown"
         Loaded="MainWindow_Loaded"
@@ -20,17 +20,17 @@
     <DataTemplate x:Key="BuildItemTemplate" DataType="{x:Type BuildScreen:BuildViewModel}">
       <Grid>
         <Rectangle Fill="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" />
-        <Viewbox Margin="20,0">
-          <DockPanel>
-            <StackPanel DockPanel.Dock="Left" x:Name="Left" Width="518.333">
-              <TextBlock FontSize="24" Foreground="White" Text="{Binding Title}" />
-              <TextBlock FontSize="16" Foreground="White" Text="{Binding Subtitle}" />
-            </StackPanel>
-            <Grid DockPanel.Dock="Right">
-              <TextBlock Text="{Binding BuildNumber}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="32" Foreground="White" Opacity="0.5" />
-            </Grid>
-          </DockPanel>
-        </Viewbox>
+        <DockPanel d:LayoutOverrides="Width, Height" Margin="20,0">
+          <StackPanel DockPanel.Dock="Left" x:Name="Left" Width="518.333" VerticalAlignment="Center">
+            <Viewbox Margin="0,0,0,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">
+              <TextBlock FontSize="29.333" Foreground="White" Text="{Binding Title}" />
+            </Viewbox>
+            <TextBlock FontSize="16" Foreground="White" Text="{Binding Subtitle}" />
+          </StackPanel>
+          <Grid DockPanel.Dock="Right" HorizontalAlignment="Right">
+            <TextBlock Text="{Binding BuildNumber}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="32" Foreground="White" Opacity="0.5" />
+          </Grid>
+        </DockPanel>
       </Grid>
     </DataTemplate>
   </Window.Resources>
