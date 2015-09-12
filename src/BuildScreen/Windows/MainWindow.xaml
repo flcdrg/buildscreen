@@ -39,6 +39,6 @@
         </ItemsPanelTemplate>
       </ItemsControl.ItemsPanel>
     </ItemsControl>
-    <TextBlock Name="ShortcutsInfo" Foreground="White" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+    <TextBlock Text="[shortcuts info text inserted here]" Name="ShortcutsInfo" Foreground="#4CFFFFFF" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
   </Grid>
 </Window>
