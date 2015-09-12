@@ -14,6 +14,9 @@ namespace BuildScreen
         public Status Status
             => _build.Status;
 
+        public string BuildNumber
+            => _build.Number;
+
         public string Title
             => string.IsNullOrEmpty(_build.ProjectName) ? _build.TypeName : $"{_build.ProjectName}, {_build.TypeName}";
 
