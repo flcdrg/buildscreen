@@ -8,10 +8,10 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type Design:DesignMainWindowViewModel}, IsDesignTimeCreatable=true}"
         Title="BuildScreen"
-        Width="640"
-        Height="480"
-        MinWidth="640"
-        MinHeight="480"
+        Width="800"
+        Height="600"
+        MinWidth="800"
+        MinHeight="600"
         Icon="/BuildScreen;component/App.ico"
         KeyDown="MainWindow_KeyDown"
         Loaded="MainWindow_Loaded"
@@ -21,14 +21,14 @@
       <Grid>
         <Rectangle Fill="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" />
         <DockPanel d:LayoutOverrides="Width, Height" Margin="20,0">
-          <StackPanel DockPanel.Dock="Left" x:Name="Left" Width="518.333" VerticalAlignment="Center">
+          <StackPanel DockPanel.Dock="Left" x:Name="Left" Width="Auto" VerticalAlignment="Center">
             <Viewbox Margin="0,0,0,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">
-              <TextBlock FontSize="29.333" Foreground="White" Text="{Binding Title}" />
+              <TextBlock FontSize="37.333" Foreground="White" Text="{Binding Title}" />
             </Viewbox>
-            <TextBlock FontSize="16" Foreground="White" Text="{Binding Subtitle}" />
+            <TextBlock FontSize="26.667" Foreground="White" Text="{Binding Subtitle}" />
           </StackPanel>
           <Grid DockPanel.Dock="Right" HorizontalAlignment="Right">
-            <TextBlock Text="{Binding BuildNumber}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="32" Foreground="White" Opacity="0.5" />
+            <TextBlock Text="{Binding BuildNumber}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="80" Foreground="White" Opacity="0.5" />
           </Grid>
         </DockPanel>
       </Grid>
