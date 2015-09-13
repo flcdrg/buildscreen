@@ -23,9 +23,9 @@
         <DockPanel d:LayoutOverrides="Width, Height" Margin="20,0,0,0" LastChildFill="True">
           <Grid x:Name="Right" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
             <Grid Margin="20">
-              <Rectangle Stroke="White" RadiusX="10" RadiusY="10" StrokeThickness="2" Opacity="0.2"/>
-              <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" StretchDirection="DownOnly" Margin="20,0">
-                <TextBlock Text="{Binding BuildNumber}" FontSize="80" Foreground="White" Opacity="0.5" />
+              <Rectangle RadiusX="10" RadiusY="10" StrokeThickness="2" Opacity="0.2" Fill="White"/>
+              <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" StretchDirection="DownOnly" Margin="20,0,20,6">
+                <TextBlock Text="{Binding BuildNumber}" FontSize="80" Foreground="White" />
               </Viewbox>
             </Grid>
           </Grid>
