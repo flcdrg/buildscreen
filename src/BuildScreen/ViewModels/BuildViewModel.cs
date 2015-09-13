@@ -21,6 +21,6 @@ namespace BuildScreen
             => string.IsNullOrEmpty(_build.ProjectName) ? _build.TypeName : $"{_build.ProjectName}, {_build.TypeName}";
 
         public string Subtitle
-            => string.IsNullOrEmpty(_build.ProjectName) ? $"Build {_build.Number}" : $"Build {_build.Number}, {_build.StatusText}";
+            => _build.StatusText;
     }
 }

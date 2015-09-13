@@ -20,16 +20,21 @@
     <DataTemplate x:Key="BuildItemTemplate" DataType="{x:Type BuildScreen:BuildViewModel}">
       <Grid>
         <Rectangle Fill="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" />
-        <DockPanel d:LayoutOverrides="Width, Height" Margin="20,0">
-          <StackPanel DockPanel.Dock="Left" x:Name="Left" Width="Auto" VerticalAlignment="Center">
-            <Viewbox Margin="0,0,0,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">
+        <DockPanel d:LayoutOverrides="Width, Height" Margin="20,0,0,0" LastChildFill="True">
+          <Grid x:Name="Right" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
+            <Grid Margin="20">
+              <Rectangle Stroke="White" RadiusX="10" RadiusY="10" StrokeThickness="2" Opacity="0.2"/>
+              <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" StretchDirection="DownOnly" Margin="20,0">
+                <TextBlock Text="{Binding BuildNumber}" FontSize="80" Foreground="White" Opacity="0.5" />
+              </Viewbox>
+            </Grid>
+          </Grid>
+          <StackPanel DockPanel.Dock="Left" x:Name="Left" VerticalAlignment="Center">
+            <Viewbox Margin="0,0,20,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">
               <TextBlock FontSize="37.333" Foreground="White" Text="{Binding Title}" />
             </Viewbox>
-            <TextBlock FontSize="26.667" Foreground="White" Text="{Binding Subtitle}" />
+            <TextBlock FontSize="26.667" Foreground="White" Text="{Binding Subtitle}" Opacity="0.6" />
           </StackPanel>
-          <Grid DockPanel.Dock="Right" HorizontalAlignment="Right">
-            <TextBlock Text="{Binding BuildNumber}" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="80" Foreground="White" Opacity="0.5" />
-          </Grid>
         </DockPanel>
       </Grid>
     </DataTemplate>
