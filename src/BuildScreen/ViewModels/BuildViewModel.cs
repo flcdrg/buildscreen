@@ -18,7 +18,18 @@ namespace BuildScreen.ViewModels
             => _build.Number;
 
         public string Title
-            => string.IsNullOrEmpty(_build.ProjectName) ? _build.TypeName : $"{_build.ProjectName}, {_build.TypeName}";
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_build.ProjectName))
+                    return _build.TypeName;
+
+                if (_build.TypeName == _build.ProjectName)
+                    return _build.ProjectName;
+
+                return $"{_build.ProjectName} ({_build.TypeName})";
+            }
+        }
 
         public string Subtitle
             => _build.StatusText;
