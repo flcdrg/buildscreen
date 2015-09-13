@@ -19,7 +19,7 @@
   <Window.Resources>
     <DataTemplate x:Key="BuildItemTemplate" DataType="{x:Type BuildScreen:BuildViewModel}">
       <Grid>
-        <Rectangle Fill="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" />
+        <Border Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" BorderBrush="Transparent" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch"/>
         <DockPanel d:LayoutOverrides="Width, Height" Margin="20,0,0,0" LastChildFill="True">
           <Grid x:Name="Right" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
             <Grid Margin="20">
@@ -47,6 +47,6 @@
         </ItemsPanelTemplate>
       </ItemsControl.ItemsPanel>
     </ItemsControl>
-    <TextBlock Text="[shortcuts info text inserted here]" Name="ShortcutsInfo" Foreground="#4CFFFFFF" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+    <TextBlock Text="[shortcuts info text inserted here]" Name="ShortcutsInfo" Foreground="#4CFFFFFF" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="9.333" />
   </Grid>
 </Window>
