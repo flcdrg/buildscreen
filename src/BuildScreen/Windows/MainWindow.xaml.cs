@@ -4,12 +4,14 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using BuildScreen.ContinousIntegration;
+using BuildScreen.ContinousIntegration.Entities;
 using BuildScreen.ContinousIntegration.Exceptions;
 using BuildScreen.ContinousIntegration.Persistance;
 using BuildScreen.Core.Security;
 using BuildScreen.Plugin;
 using BuildScreen.Properties;
 using BuildScreen.Resources;
+using BuildScreen.ViewModels;
 
 namespace BuildScreen
 {

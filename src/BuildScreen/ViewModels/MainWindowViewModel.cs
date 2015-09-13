@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using BuildScreen.Annotations;
 using BuildScreen.ContinousIntegration.Entities;
+using BuildScreen.ViewModels;
 
 namespace BuildScreen
 {

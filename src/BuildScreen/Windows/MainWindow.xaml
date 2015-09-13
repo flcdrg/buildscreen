@@ -5,6 +5,7 @@
         xmlns:Design="clr-namespace:BuildScreen.Design"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:BuildScreen="clr-namespace:BuildScreen"
+        xmlns:viewModels="clr-namespace:BuildScreen.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type Design:DesignMainWindowViewModel}, IsDesignTimeCreatable=true}"
         Title="BuildScreen"
@@ -17,10 +18,10 @@
         Loaded="MainWindow_Loaded"
         x:Name="Window">
   <Window.Resources>
-    <DataTemplate x:Key="BuildItemTemplate" DataType="{x:Type BuildScreen:BuildViewModel}">
+    <DataTemplate x:Key="BuildItemTemplate" DataType="{x:Type viewModels:BuildViewModel}">
       <Grid>
         <Border Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" BorderBrush="Transparent" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch"/>
-        <DockPanel d:LayoutOverrides="Width, Height" Margin="20,0,0,0" LastChildFill="True">
+        <DockPanel d:LayoutOverrides="Width, Height" LastChildFill="True">
           <Grid x:Name="Right" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
             <Grid Margin="20">
               <Rectangle RadiusX="10" RadiusY="10" StrokeThickness="2" Opacity="0.2" Fill="White"/>
@@ -29,12 +30,15 @@
               </Viewbox>
             </Grid>
           </Grid>
-          <StackPanel DockPanel.Dock="Left" x:Name="Left" VerticalAlignment="Center">
-            <Viewbox Margin="0,0,20,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">
-              <TextBlock FontSize="37.333" Foreground="White" Text="{Binding Title}" />
-            </Viewbox>
-            <TextBlock FontSize="26.667" Foreground="White" Text="{Binding Subtitle}" Opacity="0.6" />
-          </StackPanel>
+          <DockPanel x:Name="Left" VerticalAlignment="Center" LastChildFill="True" Margin="0,0,20,0">
+            <BuildScreen:StatusIconControl DockPanel.Dock="Left" Status="{Binding Status}" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="20" />
+            <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
+              <Viewbox Margin="0,0,20,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">
+                <TextBlock FontSize="37.333" Foreground="White" Text="{Binding Title}" />
+              </Viewbox>
+              <TextBlock FontSize="26.667" Foreground="White" Text="{Binding Subtitle}" Opacity="0.6" />
+            </StackPanel>
+          </DockPanel>
         </DockPanel>
       </Grid>
     </DataTemplate>

@@ -1,6 +1,6 @@
 ﻿using BuildScreen.ContinousIntegration.Entities;
 
-namespace BuildScreen
+namespace BuildScreen.ViewModels
 {
     public class BuildViewModel
     {

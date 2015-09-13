@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using BuildScreen.ContinousIntegration.Entities;
+using BuildScreen.ViewModels;
 
 namespace BuildScreen.Design
 {
