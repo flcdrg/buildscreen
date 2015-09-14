@@ -31,7 +31,7 @@
             </Grid>
           </Grid>
           <DockPanel x:Name="Left" VerticalAlignment="Center" LastChildFill="True" Margin="0,0,20,0">
-            <BuildScreen:StatusIconControl DockPanel.Dock="Left" Status="{Binding Status}" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="20" />
+            <BuildScreen:StatusIconControl DockPanel.Dock="Left" Status="{Binding Status}" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="40" />
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
               <Viewbox Margin="0,0,20,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">
                 <TextBlock FontSize="37.333" Foreground="White" Text="{Binding Title}" />
