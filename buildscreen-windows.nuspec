@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <!-- Read this before publishing packages to chocolatey.org: https://github.com/chocolatey/chocolatey/wiki/CreatePackages -->
+    <id>buildscreen-windows</id>
+    <title>buildscreen-windows</title>
+    <version>1.0</version>
+    <authors>Michaël Fortin</authors>
+    <owners>Michaël Fortin</owners>
+    <summary>A TeamCity Build Screen for Windows</summary>
+    <description>A TeamCity Build Screen for Windows</description>
+    <projectUrl>https://github.com/fortinmike/buildscreen-windows</projectUrl>
+    <packageSourceUrl>https://www.myget.org/feed/Packages/simbioz</packageSourceUrl>
+    <tags>buildscreen-windows admin</tags>
+    <copyright></copyright>
+    <licenseUrl>http://www.gnu.org/licenses/gpl-3.0.en.html</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="src\BuildScreen\bin\Release\*.exe" target="lib" />
+    <file src="src\BuildScreen\bin\Release\*.gui" target="lib" />
+    <file src="src\BuildScreen\bin\Release\*.dll" target="lib" />
+  </files>
+</package>
