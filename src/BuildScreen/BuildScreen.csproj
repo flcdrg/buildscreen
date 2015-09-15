@@ -90,6 +90,7 @@
     <Compile Include="ContinousIntegration\Persistance\IBaseClient.cs" />
     <Compile Include="ContinousIntegration\Persistance\IClient.cs" />
     <Compile Include="ContinousIntegration\Persistance\IClientFactory.cs" />
+    <Compile Include="Converters\MultiplyConverter.cs" />
     <Compile Include="Converters\OneWayValueConverter.cs" />
     <Compile Include="Converters\StatusToBrushConverter.cs" />
     <Compile Include="Core\Extensions\DoubleExtensions.cs" />
