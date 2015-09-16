@@ -92,6 +92,7 @@
     <Compile Include="ContinousIntegration\Persistance\IClientFactory.cs" />
     <Compile Include="Converters\MultiplyConverter.cs" />
     <Compile Include="Converters\OneWayValueConverter.cs" />
+    <Compile Include="Converters\RelativeMarginConverter.cs" />
     <Compile Include="Converters\StatusToBrushConverter.cs" />
     <Compile Include="Core\Extensions\DoubleExtensions.cs" />
     <Compile Include="Core\Shell\SingleInstance.cs" />

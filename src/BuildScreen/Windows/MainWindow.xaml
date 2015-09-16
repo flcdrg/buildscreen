@@ -25,12 +25,14 @@
           <Grid x:Name="Right" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
             <Grid Margin="20">
               <Rectangle RadiusX="10" RadiusY="10" StrokeThickness="2" Opacity="0.2" Fill="White"/>
-              <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" StretchDirection="DownOnly" Margin="20,0,20,6">
-                <TextBlock Text="{Binding BuildNumber}" FontSize="80" Foreground="White" />
-              </Viewbox>
+              <Grid Margin="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Converter={StaticResource RelativeMarginConverter}, ConverterParameter=0.16}">
+                <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" StretchDirection="Both" Margin="0,-4,0,0">
+                  <TextBlock Text="{Binding BuildNumber}" FontSize="80" Foreground="White" />
+                </Viewbox>
+              </Grid>
             </Grid>
           </Grid>
-          <DockPanel x:Name="Left" VerticalAlignment="Center" LastChildFill="True" Margin="0,0,20,0">
+          <DockPanel x:Name="Left" VerticalAlignment="Center" LastChildFill="True" Margin="0">
             <BuildScreen:StatusIconControl DockPanel.Dock="Left" Status="{Binding Status}" Height="{Binding ActualHeight, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MultiplyConverter}, ConverterParameter=0.5}" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="20,0" />
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
               <Viewbox Margin="0,0,20,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
 using BuildScreen.Core.Shell;
 
 namespace BuildScreen
@@ -12,16 +11,15 @@ namespace BuildScreen
         [STAThread]
         public static void Main()
         {
-            if (SingleInstance<App>.InitializeAsFirstInstance(Unique))
-            {
-                App application = new App();
+            if (!SingleInstance<App>.InitializeAsFirstInstance(Unique)) return;
 
-                application.InitializeComponent();
-                application.Run();
+            var application = new App();
 
-                // Allow single instance code to perform cleanup operations
-                SingleInstance<App>.Cleanup();
-            }
+            application.InitializeComponent();
+            application.Run();
+
+            // Allow single instance code to perform cleanup operations
+            SingleInstance<App>.Cleanup();
         }
 
         #region Implementation of ISingleInstanceApp
