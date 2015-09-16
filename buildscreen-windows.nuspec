@@ -3,16 +3,16 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <!-- Read this before publishing packages to chocolatey.org: https://github.com/chocolatey/chocolatey/wiki/CreatePackages -->
-    <id>buildscreen-windows</id>
-    <title>buildscreen-windows</title>
+    <id>buildscreen</id>
+    <title>BuildScreen</title>
     <version>1.0.1</version>
     <authors>Martin Buberl, Michaël Fortin</authors>
     <owners>Michaël Fortin</owners>
     <summary>A TeamCity Build Screen for Windows</summary>
     <description>A TeamCity Build Screen for Windows</description>
-    <projectUrl>https://github.com/fortinmike/buildscreen-windows</projectUrl>
+    <projectUrl>https://github.com/fortinmike/buildscreen</projectUrl>
     <packageSourceUrl>https://www.myget.org/feed/Packages/simbioz</packageSourceUrl>
-    <tags>buildscreen-windows admin</tags>
+    <tags>buildscreen admin</tags>
     <copyright></copyright>
     <licenseUrl>http://www.gnu.org/licenses/gpl-3.0.en.html</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
