@@ -18,8 +18,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
-    <file src="src\BuildScreen\bin\Release\*.exe" target="lib" />
-    <file src="src\BuildScreen\bin\Release\*.gui" target="lib" />
-    <file src="src\BuildScreen\bin\Release\*.dll" target="lib" />
+    <file src="src\BuildScreen\bin\Release\*" target="lib" />
   </files>
 </package>
