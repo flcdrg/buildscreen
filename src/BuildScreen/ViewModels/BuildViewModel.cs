@@ -1,37 +1,78 @@
-﻿using BuildScreen.ContinousIntegration.Entities;
+﻿using System.ComponentModel;
+using BuildScreen.Annotations;
+using BuildScreen.ContinousIntegration.Entities;
 
 namespace BuildScreen.ViewModels
 {
-    public class BuildViewModel
+    public class BuildViewModel : INotifyPropertyChanged
     {
-        private readonly Build _build;
+        private Build _build;
+
+        public Build Build
+        {
+            get { return _build; }
+            set
+            {
+                _build = value;
+                OnPropertyChanged(nameof(Build));
+                OnPropertyChanged(nameof(Status));
+                OnPropertyChanged(nameof(BuildNumber));
+                OnPropertyChanged(nameof(Title));
+                OnPropertyChanged(nameof(Subtitle));
+            }
+        }
 
         public BuildViewModel(Build build)
         {
-            _build = build;
+            Build = build;
         }
 
-        public Status Status
-            => _build.Status;
+        #region Status
 
-        public string BuildNumber
-            => _build.Number;
+        public Status Status => Build.Status;
+
+        #endregion
+
+        #region BuildNumber
+
+        public string BuildNumber => Build.Number;
+
+        #endregion
+
+        #region Title
 
         public string Title
         {
             get
             {
-                if (string.IsNullOrEmpty(_build.ProjectName))
-                    return _build.TypeName;
+                if (string.IsNullOrEmpty(Build.ProjectName))
+                    return Build.TypeName;
 
-                if (_build.TypeName == _build.ProjectName)
-                    return _build.ProjectName;
+                if (Build.TypeName == Build.ProjectName)
+                    return Build.ProjectName;
 
-                return $"{_build.ProjectName} ({_build.TypeName})";
+                return $"{Build.ProjectName} ({Build.TypeName})";
             }
         }
 
-        public string Subtitle
-            => _build.StatusText;
+        #endregion
+
+        #region Subtitle
+
+        public string Subtitle => Build.StatusText;
+
+        #endregion
+
+        #region INotifyPropertyChanged Implementation
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
     }
 }

@@ -12,11 +12,11 @@ namespace BuildScreen.ContinousIntegration.Entities
     [Serializable]
     public class Build
     {
-        public string Number { get; set; }
-        public Status Status { get; set; }
+        public string Number { get; set; } = "X";
+        public Status Status { get; set; } = Status.Fail;
         public string StatusText { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime FinishDate { get; set; }
+        public DateTime StartDate { get; set; } = DateTime.UtcNow;
+        public DateTime FinishDate { get; set; } = DateTime.UtcNow;
         public string UniqueIdentifier { get; set; }
         public string TypeName { get; set; }
         public string ProjectName { get; set; }

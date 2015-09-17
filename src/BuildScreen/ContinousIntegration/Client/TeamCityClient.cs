@@ -53,7 +53,7 @@ namespace BuildScreen.ContinousIntegration.Client
             XAttribute buildIdAttribute = (from xml in xDocument.Elements("builds").Elements("build").Attributes("id")
                                            select xml).FirstOrDefault();
 
-            return buildIdAttribute == null ? null : buildIdAttribute.Value;
+            return buildIdAttribute?.Value;
         }
 
         internal Build GetBuildByBuildId(string buildId)
