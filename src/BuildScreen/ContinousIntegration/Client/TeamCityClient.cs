@@ -20,11 +20,11 @@ namespace BuildScreen.ContinousIntegration.Client
 
         public ReadOnlyCollection<Build> Builds()
         {
-            IList<Build> builds = (from typeId in GetAllTypeIds()
-                                   select GetLastBuildIdByTypeId(typeId)
-                                   into buildId where !string.IsNullOrEmpty(buildId) select GetBuildByBuildId(buildId)).ToList();
+            var typeIds = GetAllTypeIds();
+            var buildIds = typeIds.Select(GetLastBuildIdByTypeId).Where(buildId => !string.IsNullOrEmpty(buildId));
+            var builds = buildIds.Select(buildId => GetBuildByBuildId(buildId));
 
-            return new ReadOnlyCollection<Build>(builds);
+            return new ReadOnlyCollection<Build>(builds.ToList());
         }
 
         public Build BuildByUniqueIdentifier(string key)
@@ -36,39 +36,37 @@ namespace BuildScreen.ContinousIntegration.Client
 
         internal IEnumerable<string> GetAllTypeIds()
         {
-            Uri uri = new Uri(string.Concat(BaseUri(), "buildTypes/"));
+            var uri = new Uri(string.Concat(BaseUri(), "buildTypes/"));
 
-            XDocument xDocument = LoadXmlDocument(uri);
-            IEnumerable<XAttribute> typeIdAttributes = from xml in xDocument.Elements("buildTypes").Elements("buildType").Attributes("id")
-                                                       select xml;
+            var xDocument = LoadXmlDocument(uri);
+            var typeIdAttributes =
+                xDocument.Elements("buildTypes").Elements("buildType").Attributes("id").Select(xml => xml);
 
             return typeIdAttributes.Select(typeIdAttribute => typeIdAttribute.Value).ToList();
         }
 
         internal string GetLastBuildIdByTypeId(string typeId)
         {
-            Uri uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}buildTypes/id:{1}/builds/?count=1", BaseUri(), typeId));
+            var uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}buildTypes/id:{1}/builds/?count=1", BaseUri(), typeId));
 
-            XDocument xDocument = LoadXmlDocument(uri);
-            XAttribute buildIdAttribute = (from xml in xDocument.Elements("builds").Elements("build").Attributes("id")
-                                           select xml).FirstOrDefault();
+            var xDocument = LoadXmlDocument(uri);
+            var buildIdAttribute = (xDocument.Elements("builds").Elements("build").Attributes("id").Select(xml => xml)).FirstOrDefault();
 
             return buildIdAttribute?.Value;
         }
 
         internal Build GetBuildByBuildId(string buildId)
         {
-            Uri uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}builds/id:{1}", BaseUri(), buildId));
+            var uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}builds/id:{1}", BaseUri(), buildId));
 
-            XDocument xDocument = LoadXmlDocument(uri);
-            XElement xElementBuild = xDocument.Element("build");
-
-            XElement xElementBuildType = xElementBuild.Element("buildType");
+            var xDocument = LoadXmlDocument(uri);
+            var xElementBuild = xDocument.Element("build");
+            var xElementBuildType = xElementBuild.Element("buildType");
 
             return new Build
                 {
                     Number = xElementBuild.Attribute("number").Value,
-                    Status = xElementBuild.Attribute("status").Value.Equals("success", StringComparison.OrdinalIgnoreCase) ? Status.Success : Status.Fail,
+                    BuildStatus = xElementBuild.Attribute("status").Value.Equals("success", StringComparison.OrdinalIgnoreCase) ? BuildStatus.Success : BuildStatus.Fail,
                     StatusText = xElementBuild.Element("statusText").Value,
                     UniqueIdentifier = xElementBuildType.Attribute("id").Value,
                     TypeName = xElementBuildType.Attribute("name").Value,

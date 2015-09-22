@@ -9,7 +9,7 @@ namespace BuildScreen.Plugin
     {
         public void TriggerPlugins(Build oldBuild, Build newBuild)
         {
-            if (oldBuild.Status.Equals(newBuild.Status)) return;
+            if (oldBuild.BuildStatus.Equals(newBuild.BuildStatus)) return;
 
             PluginConfigurationSection plugins = ConfigurationManager.GetSection("pluginConfiguration") as PluginConfigurationSection;
 

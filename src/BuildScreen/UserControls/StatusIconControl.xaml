@@ -11,7 +11,7 @@
   x:Name="UserControl">
   <Grid x:Name="RootGrid">
     <i:Interaction.Behaviors>
-      <Behaviors:FixedDataStateBehavior Binding="{Binding Status, ElementName=UserControl}" TrueState="SuccessState" FalseState="FailureState" Value="Success"/>
+      <Behaviors:FixedDataStateBehavior Binding="{Binding BuildStatus, ElementName=UserControl}" TrueState="SuccessState" FalseState="FailureState" Value="Success"/>
     </i:Interaction.Behaviors>
     <VisualStateManager.VisualStateGroups>
       <VisualStateGroup x:Name="VisualStateGroup">

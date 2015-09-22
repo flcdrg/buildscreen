@@ -20,7 +20,7 @@
   <Window.Resources>
     <DataTemplate x:Key="BuildItemTemplate" DataType="{x:Type viewModels:BuildViewModel}">
       <Grid>
-        <Border Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" BorderBrush="Transparent" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch"/>
+        <Border Background="{Binding BuildStatus, Converter={StaticResource StatusToBrushConverter}}" BorderBrush="Transparent" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch"/>
         <DockPanel d:LayoutOverrides="Width, Height" LastChildFill="True">
           <Grid x:Name="Right" DockPanel.Dock="Right" HorizontalAlignment="Right" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
             <Grid Margin="20">
@@ -33,7 +33,7 @@
             </Grid>
           </Grid>
           <DockPanel x:Name="Left" VerticalAlignment="Center" LastChildFill="True" Margin="0">
-            <BuildScreen:StatusIconControl DockPanel.Dock="Left" Status="{Binding Status}" Height="{Binding ActualHeight, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MultiplyConverter}, ConverterParameter=0.5}" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="20,0" />
+            <BuildScreen:StatusIconControl DockPanel.Dock="Left" BuildStatus="{Binding BuildStatus}" Height="{Binding ActualHeight, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MultiplyConverter}, ConverterParameter=0.5}" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="20,0" />
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
               <Viewbox Margin="0,0,20,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">
                 <TextBlock FontSize="37.333" Foreground="White" Text="{Binding Title}" />

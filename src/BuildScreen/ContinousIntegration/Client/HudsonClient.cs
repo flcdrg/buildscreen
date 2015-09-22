@@ -30,12 +30,12 @@ namespace BuildScreen.ContinousIntegration.Client
             {
                 UniqueIdentifier = xmlBuild.Element("name").Value,
                 TypeName = xmlBuild.Element("name").Value,
-                Status =
+                BuildStatus =
                     xmlBuild.Element("lastBuild").Value.Equals(
                         "success",
                         StringComparison.OrdinalIgnoreCase)
-                        ? Status.Success
-                        : Status.Fail,
+                        ? BuildStatus.Success
+                        : BuildStatus.Fail,
             }).ToList();
 
             return new ReadOnlyCollection<Build>(builds);
@@ -55,7 +55,7 @@ namespace BuildScreen.ContinousIntegration.Client
             return new Build
             {
                 Number = buildNumber,
-                Status = xDocument.Element(root).Element("result").Value.Equals("success", StringComparison.OrdinalIgnoreCase) ? Status.Success : Status.Fail,
+                BuildStatus = xDocument.Element(root).Element("result").Value.Equals("success", StringComparison.OrdinalIgnoreCase) ? BuildStatus.Success : BuildStatus.Fail,
                 UniqueIdentifier = key,
                 TypeName = key,
                 StartDate = startTime,

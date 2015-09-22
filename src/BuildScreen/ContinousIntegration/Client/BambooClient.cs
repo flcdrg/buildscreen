@@ -50,7 +50,7 @@ namespace BuildScreen.ContinousIntegration.Client
             XElement latestBuildForPlan = latestBuilds.FirstOrDefault(x => x.Attribute("key").Value.StartsWith(plan.Attribute("key").Value));
 
             build.UniqueIdentifier = plan.Attribute("key").Value;
-            build.Status = latestBuildForPlan.Attribute("state").Value.Equals("Successful", StringComparison.OrdinalIgnoreCase) ? Status.Success : Status.Fail;
+            build.BuildStatus = latestBuildForPlan.Attribute("state").Value.Equals("Successful", StringComparison.OrdinalIgnoreCase) ? BuildStatus.Success : BuildStatus.Fail;
             build.Number = latestBuildForPlan.Attribute("number").Value;
             build.ProjectName = plan.Attribute("name").Value;
 
