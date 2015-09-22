@@ -3,11 +3,17 @@ using System.Collections.Generic;
 
 namespace BuildScreen.ContinousIntegration.Entities
 {
+    public enum Status
+    {
+        Fail,
+        Success
+    }
+
     [Serializable]
     public class Build
     {
         public string Number { get; set; } = "X";
-        public BuildStatus BuildStatus { get; set; } = BuildStatus.Fail;
+        public Status Status { get; set; } = Status.Fail;
         public string StatusText { get; set; }
         public DateTime StartDate { get; set; } = DateTime.UtcNow;
         public DateTime FinishDate { get; set; } = DateTime.UtcNow;

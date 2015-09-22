@@ -66,7 +66,7 @@ namespace BuildScreen.Plugin
                     Number = build.Number,
                     ProjectName = build.ProjectName,
                     StartDate = build.StartDate,
-                    Status = build.BuildStatus.ToString(),
+                    Status = build.Status.ToString(),
                     StatusText = build.StatusText,
                     TypeId = build.UniqueIdentifier,
                     TypeName = build.TypeName

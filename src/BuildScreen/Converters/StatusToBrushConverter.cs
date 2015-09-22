@@ -9,10 +9,10 @@ namespace BuildScreen.Converters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch ((BuildStatus)value)
+            switch ((Status)value)
             {
-                case BuildStatus.Success: return new SolidColorBrush(Colors.DarkGreen);
-                case BuildStatus.Fail: return new SolidColorBrush(Colors.DarkRed);
+                case Status.Success: return new SolidColorBrush(Colors.DarkGreen);
+                case Status.Fail: return new SolidColorBrush(Colors.DarkRed);
                 default: return new SolidColorBrush(Colors.Gray);
             }
         }

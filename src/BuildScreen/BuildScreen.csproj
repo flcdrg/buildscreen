@@ -73,7 +73,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContinousIntegration\Entities\BuildStatus.cs" />
     <Compile Include="Logic\Updater.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

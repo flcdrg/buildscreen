@@ -15,7 +15,7 @@ namespace BuildScreen.ViewModels
             {
                 _build = value;
                 OnPropertyChanged(nameof(Build));
-                OnPropertyChanged(nameof(BuildStatus));
+                OnPropertyChanged(nameof(Status));
                 OnPropertyChanged(nameof(BuildNumber));
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(Subtitle));
@@ -27,9 +27,9 @@ namespace BuildScreen.ViewModels
             Build = build;
         }
 
-        #region BuildStatus
+        #region Status
 
-        public BuildStatus BuildStatus => Build.BuildStatus;
+        public Status Status => Build.Status;
 
         #endregion
 

@@ -21,7 +21,7 @@ namespace BuildScreen.Design
             return new Build
                 {
                     Number = "42",
-                    BuildStatus = BuildStatus.Success,
+                    Status = Status.Success,
                     StatusText = "All is good",
                     StartDate = DateTime.UtcNow,
                     FinishDate = DateTime.UtcNow,
@@ -36,7 +36,7 @@ namespace BuildScreen.Design
             return new Build
             {
                 Number = "84",
-                BuildStatus = BuildStatus.Fail,
+                Status = Status.Fail,
                 StatusText = "Something went wrong",
                 StartDate = DateTime.UtcNow,
                 FinishDate = DateTime.UtcNow,
