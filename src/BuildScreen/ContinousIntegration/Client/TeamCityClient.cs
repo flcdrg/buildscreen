@@ -11,6 +11,12 @@ namespace BuildScreen.ContinousIntegration.Client
 {
     public class TeamCityClient : BaseClient, IClient
     {
+        private struct BuildInfo
+        {
+            public string CompletedBuildId { get; set; }
+            public string RunningBuildId { get; set; }
+        }
+
         public TeamCityClient(ClientConfiguration clientConfiguration)
             : base(clientConfiguration)
         {
@@ -20,50 +26,67 @@ namespace BuildScreen.ContinousIntegration.Client
 
         public ReadOnlyCollection<Build> Builds()
         {
-            IList<Build> builds = (from typeId in GetAllTypeIds()
-                                   select GetLastBuildIdByTypeId(typeId)
-                                   into buildId where !string.IsNullOrEmpty(buildId) select GetBuildByBuildId(buildId)).ToList();
+            var typeIds = GetAllTypeIds();
 
-            return new ReadOnlyCollection<Build>(builds);
+            var lastBuildIdsByTypeId = typeIds.Select(typeId =>
+            {
+                var completedBuildId = GetLastCompletedBuildIdByTypeId(typeId);
+                var runningBuildId = GetRunningBuildIdByTypeId(typeId);
+                return new BuildInfo { CompletedBuildId = completedBuildId, RunningBuildId = runningBuildId };
+            }).Where(info => !string.IsNullOrEmpty(info.CompletedBuildId));
+
+            var builds = lastBuildIdsByTypeId.Select(info =>
+            {
+                var completedBuild = GetBuild(info.CompletedBuildId);
+                var runningBuild = GetBuild(info.RunningBuildId);
+                return completedBuild;
+            });
+
+            return new ReadOnlyCollection<Build>(builds.ToList());
+        }
+
+        private string GetRunningBuildIdByTypeId(string typeId)
+        {
+            return null;
         }
 
         public Build BuildByUniqueIdentifier(string key)
         {
-            return GetBuildByBuildId(GetLastBuildIdByTypeId(key));
+            return GetBuild(GetLastCompletedBuildIdByTypeId(key));
         }
 
         #endregion
 
         internal IEnumerable<string> GetAllTypeIds()
         {
-            Uri uri = new Uri(string.Concat(BaseUri(), "buildTypes/"));
+            var uri = new Uri(string.Concat(BaseUri(), "buildTypes/"));
 
-            XDocument xDocument = LoadXmlDocument(uri);
-            IEnumerable<XAttribute> typeIdAttributes = from xml in xDocument.Elements("buildTypes").Elements("buildType").Attributes("id")
+            var xDocument = LoadXmlDocument(uri);
+            var typeIdAttributes = from xml in xDocument.Elements("buildTypes").Elements("buildType").Attributes("id")
                                                        select xml;
 
             return typeIdAttributes.Select(typeIdAttribute => typeIdAttribute.Value).ToList();
         }
 
-        internal string GetLastBuildIdByTypeId(string typeId)
+        internal string GetLastCompletedBuildIdByTypeId(string typeId)
         {
-            Uri uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}buildTypes/id:{1}/builds/?count=1", BaseUri(), typeId));
+            var uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}buildTypes/id:{1}/builds/?count=1", BaseUri(), typeId));
 
-            XDocument xDocument = LoadXmlDocument(uri);
-            XAttribute buildIdAttribute = (from xml in xDocument.Elements("builds").Elements("build").Attributes("id")
+            var xDocument = LoadXmlDocument(uri);
+            var buildIdAttribute = (from xml in xDocument.Elements("builds").Elements("build").Attributes("id")
                                            select xml).FirstOrDefault();
 
             return buildIdAttribute?.Value;
         }
 
-        internal Build GetBuildByBuildId(string buildId)
+        internal Build GetBuild(string buildId)
         {
-            Uri uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}builds/id:{1}", BaseUri(), buildId));
+            var uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}builds/id:{1}", BaseUri(), buildId));
 
-            XDocument xDocument = LoadXmlDocument(uri);
-            XElement xElementBuild = xDocument.Element("build");
+            var xDocument = LoadXmlDocument(uri);
+            var xElementBuild = xDocument.Element("build");
 
-            XElement xElementBuildType = xElementBuild.Element("buildType");
+            var xElementBuildType = xElementBuild.Element("buildType");
 
             return new Build
                 {
