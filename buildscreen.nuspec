@@ -5,7 +5,7 @@
     <!-- Read this before publishing packages to chocolatey.org: https://github.com/chocolatey/chocolatey/wiki/CreatePackages -->
     <id>buildscreen</id>
     <title>BuildScreen</title>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <authors>Martin Buberl, Michaël Fortin</authors>
     <owners>Michaël Fortin</owners>
     <summary>A TeamCity Build Screen for Windows</summary>
