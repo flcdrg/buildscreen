@@ -162,10 +162,7 @@ namespace BuildScreen
             using (IClient client = _clientFactory.CreateClient(e.Argument as ClientConfiguration))
             {
                 if (client.IsConnected)
-                {
-                    ReadOnlyCollection<Build> builds = client.Builds();
-                    e.Result = builds;
-                }
+                    e.Result = client.FetchBuilds();
             }
         }
 
@@ -184,7 +181,7 @@ namespace BuildScreen
                     }
                 }
 
-                checkBox.Content = string.IsNullOrEmpty(build.ProjectName) ? build.TypeName : string.Format("{0}, {1}", build.ProjectName, build.TypeName);
+                checkBox.Content = string.IsNullOrEmpty(build.ProjectName) ? build.TypeName : $"{build.ProjectName}, {build.TypeName}";
                 checkBox.Margin = new Thickness(6);
                 checkBox.Padding = new Thickness(9, 0, 0, 0);
                 checkBox.Tag = build;

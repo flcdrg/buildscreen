@@ -7,5 +7,6 @@
     <converters:StatusToBrushConverter x:Key="StatusToBrushConverter" />
     <converters:MultiplyConverter x:Key="MultiplyConverter" />
     <converters:RelativeMarginConverter x:Key="RelativeMarginConverter" />
+    <converters:BuildProgressWidthMultiConverter x:Key="PercentageMultiConverter" />
   </Application.Resources>
 </Application>

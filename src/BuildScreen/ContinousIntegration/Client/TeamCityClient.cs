@@ -24,7 +24,7 @@ namespace BuildScreen.ContinousIntegration.Client
 
         #region Implementation of IContinousIntegrationClient
 
-        public ReadOnlyCollection<Build> Builds()
+        public ReadOnlyCollection<Build> FetchBuilds()
         {
             var typeIds = GetAllTypeIds();
 
@@ -38,21 +38,22 @@ namespace BuildScreen.ContinousIntegration.Client
             var builds = lastBuildIdsByTypeId.Select(info =>
             {
                 var completedBuild = GetBuild(info.CompletedBuildId);
-                var runningBuild = GetBuild(info.RunningBuildId);
+                var runningBuild = info.RunningBuildId != null ? GetBuild(info.RunningBuildId) : null;
+                completedBuild.PercentageComplete = runningBuild?.PercentageComplete ?? 100;
                 return completedBuild;
             });
 
-            return new ReadOnlyCollection<Build>(builds.ToList());
+            var buildList = builds.ToList();
+            return new ReadOnlyCollection<Build>(buildList);
         }
-
-        private string GetRunningBuildIdByTypeId(string typeId)
-        {
-            return null;
-        }
-
+        
         public Build BuildByUniqueIdentifier(string key)
         {
-            return GetBuild(GetLastCompletedBuildIdByTypeId(key));
+            var build = GetBuild(GetLastCompletedBuildIdByTypeId(key));
+            var runningBuildId = GetRunningBuildIdByTypeId(key);
+            var runningBuild = runningBuildId != null ? GetBuild(runningBuildId) : null;
+            build.PercentageComplete = runningBuild?.PercentageComplete ?? 100;
+            return build;
         }
 
         #endregion
@@ -62,8 +63,7 @@ namespace BuildScreen.ContinousIntegration.Client
             var uri = new Uri(string.Concat(BaseUri(), "buildTypes/"));
 
             var xDocument = LoadXmlDocument(uri);
-            var typeIdAttributes = from xml in xDocument.Elements("buildTypes").Elements("buildType").Attributes("id")
-                                                       select xml;
+            var typeIdAttributes = xDocument.Elements("buildTypes").Elements("buildType").Attributes("id").Select(xml => xml);
 
             return typeIdAttributes.Select(typeIdAttribute => typeIdAttribute.Value).ToList();
         }
@@ -73,10 +73,18 @@ namespace BuildScreen.ContinousIntegration.Client
             var uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}buildTypes/id:{1}/builds/?count=1", BaseUri(), typeId));
 
             var xDocument = LoadXmlDocument(uri);
-            var buildIdAttribute = (from xml in xDocument.Elements("builds").Elements("build").Attributes("id")
-                                           select xml).FirstOrDefault();
+            var buildIdAttribute = (xDocument.Elements("builds").Elements("build").Attributes("id").Select(xml => xml)).FirstOrDefault();
 
             return buildIdAttribute?.Value;
+        }
+
+        private string GetRunningBuildIdByTypeId(string typeId)
+        {
+            var uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}builds?locator=running:true", BaseUri()));
+            var xDocument = LoadXmlDocument(uri);
+            var xBuilds = xDocument.Element("builds")?.Elements("build");
+            var xRunningBuild = xBuilds?.FirstOrDefault(b => b.Attribute("buildTypeId").Value == typeId);
+            return xRunningBuild?.Attribute("id").Value;
         }
 
         internal Build GetBuild(string buildId)
@@ -84,21 +92,23 @@ namespace BuildScreen.ContinousIntegration.Client
             var uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}builds/id:{1}", BaseUri(), buildId));
 
             var xDocument = LoadXmlDocument(uri);
-            var xElementBuild = xDocument.Element("build");
-
-            var xElementBuildType = xElementBuild.Element("buildType");
+            var xBuildId = xDocument.Element("build");
+            var xBuildType = xBuildId.Element("buildType");
+            var xFinishDate = xBuildId.Element("finishDate");
+            var xPercentageComplete = xBuildId.Attribute("percentageComplete");
 
             return new Build
                 {
-                    Number = xElementBuild.Attribute("number").Value,
-                    Status = xElementBuild.Attribute("status").Value.Equals("success", StringComparison.OrdinalIgnoreCase) ? Status.Success : Status.Fail,
-                    StatusText = xElementBuild.Element("statusText").Value,
-                    UniqueIdentifier = xElementBuildType.Attribute("id").Value,
-                    TypeName = xElementBuildType.Attribute("name").Value,
-                    ProjectName = xElementBuildType.Attribute("projectName").Value,
+                    Number = xBuildId.Attribute("number").Value,
+                    Status = xBuildId.Attribute("status").Value.Equals("success", StringComparison.OrdinalIgnoreCase) ? Status.Success : Status.Fail,
+                    StatusText = xBuildId.Element("statusText").Value,
+                    UniqueIdentifier = xBuildType.Attribute("id").Value,
+                    TypeName = xBuildType.Attribute("name").Value,
+                    ProjectName = xBuildType.Attribute("projectName").Value,
 
-                    StartDate = DateTime.ParseExact(xElementBuild.Element("startDate").Value, "yyyyMMddTHHmmsszzzz", CultureInfo.InvariantCulture),
-                    FinishDate = DateTime.ParseExact(xElementBuild.Element("finishDate").Value, "yyyyMMddTHHmmsszzzz", CultureInfo.InvariantCulture),
+                    StartDate = DateTime.ParseExact(xBuildId.Element("startDate").Value, "yyyyMMddTHHmmsszzzz", CultureInfo.InvariantCulture),
+                    FinishDate = xFinishDate != null ? DateTime.ParseExact(xFinishDate.Value, "yyyyMMddTHHmmsszzzz", CultureInfo.InvariantCulture) : DateTime.MaxValue,
+                    PercentageComplete = xPercentageComplete != null ? int.Parse(xPercentageComplete.Value) : 100
                 };
         }
     }

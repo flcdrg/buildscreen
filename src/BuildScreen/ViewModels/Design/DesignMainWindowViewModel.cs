@@ -27,7 +27,8 @@ namespace BuildScreen.Design
                     FinishDate = DateTime.UtcNow,
                     ProjectName = "MyProject1",
                     TypeName = "MyType1",
-                    UniqueIdentifier = "myprojectuniqueid1"
+                    UniqueIdentifier = "myprojectuniqueid1",
+                    PercentageComplete = 32
                 };
         }
 
@@ -42,7 +43,8 @@ namespace BuildScreen.Design
                 FinishDate = DateTime.UtcNow,
                 ProjectName = "MyProject2",
                 TypeName = "MyType2",
-                UniqueIdentifier = "myprojectuniqueid2"
+                UniqueIdentifier = "myprojectuniqueid2",
+                PercentageComplete = 100
             };
         }
     }

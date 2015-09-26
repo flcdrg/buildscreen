@@ -115,8 +115,7 @@ namespace BuildScreen.ContinousIntegration.Client
             }
             finally
             {
-                if (webResponse != null)
-                    webResponse.Close();
+                webResponse?.Close();
             }
         }
 

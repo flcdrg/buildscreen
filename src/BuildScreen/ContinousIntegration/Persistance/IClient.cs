@@ -5,7 +5,7 @@ namespace BuildScreen.ContinousIntegration.Persistance
 {
     public interface IClient : IBaseClient
     {
-        ReadOnlyCollection<Build> Builds();
+        ReadOnlyCollection<Build> FetchBuilds();
         Build BuildByUniqueIdentifier(string key);
     }
 }

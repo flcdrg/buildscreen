@@ -19,6 +19,7 @@ namespace BuildScreen.ViewModels
                 OnPropertyChanged(nameof(BuildNumber));
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(Subtitle));
+                OnPropertyChanged(nameof(RatioComplete));
             }
         }
 
@@ -60,6 +61,12 @@ namespace BuildScreen.ViewModels
         #region Subtitle
 
         public string Subtitle => Build.StatusText;
+
+        #endregion
+
+        #region RatioComplete
+
+        public double RatioComplete => Build.PercentageComplete / 100.0;
 
         #endregion
 

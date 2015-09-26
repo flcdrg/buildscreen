@@ -19,7 +19,7 @@ namespace BuildScreen.ContinousIntegration.Client
 
         #region Implementation of IContinousIntegrationClient
 
-        public ReadOnlyCollection<Build> Builds()
+        public ReadOnlyCollection<Build> FetchBuilds()
         {
             Uri uri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}/api/xml?tree=jobs[name,lastBuild[result]]", BaseUri()));
             XDocument xDocument = LoadXmlDocument(uri);

@@ -18,18 +18,13 @@ namespace BuildScreen.ContinousIntegration.Client
 
         #region Implementation of IContinousIntegrationClient
 
-        public ReadOnlyCollection<Build> Builds()
+        public ReadOnlyCollection<Build> FetchBuilds()
         {
-            IEnumerable<XElement> plans = GetPlans();
-            IEnumerable<XElement> latestBuilds = GetLatestBuild();
+            var latestBuilds = GetLatestBuild().ToList();
 
             IList<Build> builds = new List<Build>();
-            foreach (XElement plan in plans)
-            {
-                Build build = GetBuild(latestBuilds, plan);
-
-                builds.Add(build);
-            }
+            foreach (XElement plan in GetPlans())
+                builds.Add(GetBuild(latestBuilds, plan));
 
             return new ReadOnlyCollection<Build>(builds);
         }

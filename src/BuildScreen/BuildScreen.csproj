@@ -73,6 +73,8 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\OneWayMultiValueConverterBase.cs" />
+    <Compile Include="Converters\BuildProgressWidthMultiConverter.cs" />
     <Compile Include="Logic\Updater.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>

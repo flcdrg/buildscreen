@@ -20,6 +20,7 @@ namespace BuildScreen.ContinousIntegration.Entities
         public string UniqueIdentifier { get; set; }
         public string TypeName { get; set; }
         public string ProjectName { get; set; }
+        public int PercentageComplete { get; set; }
     }
 
     /// <remarks>
