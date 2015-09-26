@@ -73,6 +73,11 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildInProgressControl.xaml.cs">
+      <DependentUpon>BuildInProgressControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\EqualToOneToHiddenOrVisibleConverter.cs" />
+    <Compile Include="Converters\EqualToOneToVisibleOrHiddenConverter.cs" />
     <Compile Include="Converters\OneWayMultiValueConverterBase.cs" />
     <Compile Include="Converters\BuildProgressWidthMultiConverter.cs" />
     <Compile Include="Logic\Updater.cs" />
@@ -124,6 +129,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InternalResources.resx</DependentUpon>
     </Compile>
+    <Page Include="BuildInProgressControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\StatusIconControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

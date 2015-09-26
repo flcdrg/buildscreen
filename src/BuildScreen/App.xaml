@@ -8,5 +8,7 @@
     <converters:MultiplyConverter x:Key="MultiplyConverter" />
     <converters:RelativeMarginConverter x:Key="RelativeMarginConverter" />
     <converters:BuildProgressWidthMultiConverter x:Key="PercentageMultiConverter" />
+    <converters:EqualToOneToVisibleOrHiddenConverter x:Key="EqualToOneToVisibleOrHiddenConverter" />
+    <converters:EqualToOneToHiddenOrVisibleConverter x:Key="EqualToOneToHiddenOrVisibleConverter" />
   </Application.Resources>
 </Application>

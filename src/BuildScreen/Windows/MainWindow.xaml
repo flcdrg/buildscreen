@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:BuildScreen="clr-namespace:BuildScreen"
         xmlns:viewModels="clr-namespace:BuildScreen.ViewModels"
+        xmlns:Converters="clr-namespace:BuildScreen.Converters"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type={x:Type Design:DesignMainWindowViewModel}, IsDesignTimeCreatable=true}"
         Title="BuildScreen"
@@ -42,7 +43,10 @@
                 </Grid>
               </Grid>
               <DockPanel x:Name="Left" VerticalAlignment="Center" LastChildFill="True" Margin="0">
-                <BuildScreen:StatusIconControl DockPanel.Dock="Left" Status="{Binding Status}" Height="{Binding ActualHeight, ConverterParameter=0.5, Converter={StaticResource MultiplyConverter}, RelativeSource={RelativeSource TemplatedParent}}" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="20,0" />
+                <Grid DockPanel.Dock="Left" Height="{Binding ActualHeight, ConverterParameter=0.5, Converter={StaticResource MultiplyConverter}, RelativeSource={RelativeSource TemplatedParent}}" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="20,0">
+                  <BuildScreen:BuildInProgressControl Visibility="{Binding RatioComplete, Converter={StaticResource EqualToOneToHiddenOrVisibleConverter}}"/>
+                  <BuildScreen:StatusIconControl Status="{Binding Status}" Visibility="{Binding RatioComplete, Converter={StaticResource EqualToOneToVisibleOrHiddenConverter}}" />
+                </Grid>
                 <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
                   <Viewbox Margin="0,0,20,6" Stretch="Fill" StretchDirection="DownOnly" HorizontalAlignment="Left">
                     <TextBlock FontSize="37.333" Foreground="White" Text="{Binding Title}" />
